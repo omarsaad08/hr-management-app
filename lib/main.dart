@@ -1,7 +1,13 @@
+import 'package:flutter/material.dart';
+import 'package:hr_management_app/components/theme.dart';
+import 'package:hr_management_app/screens/admin/archive/userArchive.dart';
+import 'package:hr_management_app/screens/home.dart';
+
 import 'package:hr_management_app/screens/auth/login.dart';
 import 'package:hr_management_app/screens/auth/signup.dart';
-import 'package:hr_management_app/screens/home.dart';
-import 'package:flutter/material.dart';
+
+import 'package:hr_management_app/screens/admin/archive/search.dart';
+
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
@@ -19,13 +25,16 @@ void main() async {
     MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-          // fontFamily: "Arial",
-          ),
-      home: loggedIn ? Home() : Signup(),
+        fontFamily: "Hacen-Liner-Print-out",
+      ),
+      // home: loggedIn ? Home() : Signup(),
+      home: ArchiveSearch(),
       routes: {
+        '/home': (context) => Home(),
         '/signup': (context) => Signup(),
         '/login': (context) => Login(),
-        '/home': (context) => Home(),
+        '/arhive_search': (context) => ArchiveSearch(),
+        '/user_archive': (context) => UserArchive()
       },
       // for making the app RTL
       localizationsDelegates: [
