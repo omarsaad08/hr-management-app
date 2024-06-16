@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:hr_management_app/components/customAppBar.dart';
-import 'package:hr_management_app/components/customTextField.dart';
-import 'package:hr_management_app/components/customButton.dart';
-import 'package:hr_management_app/components/theme.dart';
+import 'package:hr_management_app/presentation/components/customAppBar.dart';
+import 'package:hr_management_app/presentation/components/customTextField.dart';
+import 'package:hr_management_app/presentation/components/customButton.dart';
+import 'package:hr_management_app/presentation/components/theme.dart';
 
 class ArchiveSearch extends StatefulWidget {
   const ArchiveSearch({super.key});

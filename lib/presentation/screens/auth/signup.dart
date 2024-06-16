@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:hr_management_app/services/auth.dart';
+import 'package:hr_management_app/data/web_services/auth.dart';
 
-class Login extends StatefulWidget {
-  const Login({super.key});
+class Signup extends StatefulWidget {
+  const Signup({super.key});
 
   @override
-  State<Login> createState() => _LoginState();
+  State<Signup> createState() => _SignupState();
 }
 
-class _LoginState extends State<Login> {
+class _SignupState extends State<Signup> {
   final _formKey = GlobalKey<FormState>();
   final _idController = TextEditingController();
   final _passwordController = TextEditingController();
+  final _roleController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -37,12 +38,20 @@ class _LoginState extends State<Login> {
                     decoration: InputDecoration(labelText: 'كلمة المرور'),
                     obscureText: true,
                   ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  TextFormField(
+                    controller: _roleController,
+                    decoration: InputDecoration(labelText: 'المستوى'),
+                    obscureText: true,
+                  ),
                   SizedBox(height: 40),
                   ElevatedButton(
                     child: Text('إنشاء حساب'),
                     onPressed: () {
-                      login(context, _idController, _passwordController,
-                          _formKey);
+                      signup(context, _idController, _passwordController,
+                          _roleController, _formKey);
                     },
                   ),
                 ],

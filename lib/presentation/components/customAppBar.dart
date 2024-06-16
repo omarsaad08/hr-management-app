@@ -1,6 +1,6 @@
 // use this app bar in the screens that has an app bar
 import 'package:flutter/material.dart';
-import 'package:hr_management_app/components/theme.dart';
+import 'package:hr_management_app/presentation/components/theme.dart';
 
 AppBar customAppBar(String title) {
   return AppBar(
