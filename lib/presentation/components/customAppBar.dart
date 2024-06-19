@@ -18,7 +18,7 @@ AppBar customAppBar(String title) {
     ),
     title: Text(
       title,
-      style: TextStyle(color: Colors.white, fontSize: 32),
+      style: TextStyle(color: Colors.white, fontSize: 26),
     ),
     centerTitle: true,
   );

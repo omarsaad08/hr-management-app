@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hr_management_app/app_router.dart';
 import 'package:hr_management_app/presentation/components/theme.dart';
 import 'package:hr_management_app/presentation/screens/admin/archive/userArchive.dart';
 import 'package:hr_management_app/presentation/screens/home.dart';
@@ -23,20 +24,23 @@ void main() async {
   //   loggedIn = false;
   // }
 
-  runApp(
-    MaterialApp(
+  runApp(HRManagementApp(appRouter: AppRouter()));
+}
+
+class HRManagementApp extends StatelessWidget {
+  final AppRouter appRouter;
+  const HRManagementApp({super.key, required this.appRouter});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        fontFamily: "Hacen-Liner-Print-out",
+        // fontFamily: "Hacen-Liner-Print-out",
+        fontFamily: "Cairo",
       ),
-      home: ArchiveSearch(),
-      routes: {
-        '/home': (context) => Home(),
-        '/signup': (context) => Signup(),
-        '/login': (context) => Login(),
-        '/arhive_search': (context) => ArchiveSearch(),
-        '/user_archive': (context) => UserArchive()
-      },
+      initialRoute: '/archive_search',
+      onGenerateRoute: appRouter.generateRoute,
       // for making the app RTL
       localizationsDelegates: [
         GlobalCupertinoLocalizations.delegate,
@@ -47,6 +51,6 @@ void main() async {
         Locale("ar", "AE"),
       ],
       locale: Locale("ar", "AE"),
-    ),
-  );
+    );
+  }
 }
