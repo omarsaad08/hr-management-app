@@ -14,7 +14,7 @@ class AddUserArchive extends StatelessWidget {
     TextEditingController idController = TextEditingController();
     return Scaffold(
       backgroundColor: clr(3),
-      appBar: customAppBar('إضافة موظف للأرشيف'),
+      appBar: customAppBar('إضافة موظف للأرشيف', context, true),
       body: BlocBuilder<UserArchiveCubit, UserArchiveState>(
         builder: (context, state) {
           if (state is UserArchiveAddUserError) {

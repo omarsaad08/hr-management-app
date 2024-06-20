@@ -19,7 +19,7 @@ class _ArchiveDocumentState extends State<ArchiveDocument> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: customAppBar('user document'),
+        appBar: customAppBar('user document', context, true),
         body: Container(
           padding: EdgeInsets.symmetric(horizontal: 64, vertical: 32),
           decoration: BoxDecoration(color: clr(3)),

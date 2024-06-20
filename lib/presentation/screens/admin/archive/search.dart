@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hr_management_app/app_router.dart';
 import 'package:hr_management_app/business_logic/cubit/user_archive_cubit.dart';
 import 'package:hr_management_app/presentation/components/customAppBar.dart';
+import 'package:hr_management_app/presentation/components/customContainer.dart';
 import 'package:hr_management_app/presentation/components/customTextField.dart';
 import 'package:hr_management_app/presentation/components/customButton.dart';
 import 'package:hr_management_app/presentation/components/theme.dart';
@@ -26,7 +27,7 @@ class _ArchiveSearchState extends State<ArchiveSearch> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: clr(3),
-      appBar: customAppBar('الأرشيف'),
+      appBar: customAppBar('الأرشيف', context, true),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -45,14 +46,9 @@ class _ArchiveSearchState extends State<ArchiveSearch> {
               child: BlocBuilder<UserArchiveCubit, UserArchiveState>(
                 builder: (context, state) {
                   if (state is UserArchiveInitial) {
-                    return Center(
-                      child: Container(
+                    return customContainer(
                         width: 600,
                         height: 400,
-                        padding: EdgeInsets.all(32),
-                        decoration: BoxDecoration(
-                            color: clr(4),
-                            borderRadius: BorderRadius.circular(32)),
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
@@ -83,9 +79,7 @@ class _ArchiveSearchState extends State<ArchiveSearch> {
                                       context, '/add_user_archive');
                                 })
                           ],
-                        ),
-                      ),
-                    );
+                        ));
                   } else if (state is UserArchiveLoading) {
                     return CircularProgressIndicator();
                   } else {

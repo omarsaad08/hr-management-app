@@ -36,10 +36,14 @@ class HRManagementApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        // fontFamily: "Hacen-Liner-Print-out",
-        fontFamily: "Cairo",
-      ),
-      initialRoute: '/archive_search',
+          // fontFamily: "Hacen-Liner-Print-out",
+          fontFamily: "Cairo",
+          colorScheme: ColorScheme.light(
+            primary: clr(1),
+            onPrimary: clr(5),
+            onSurface: clr(1),
+          )),
+      initialRoute: '/admin_home',
       onGenerateRoute: appRouter.generateRoute,
       // for making the app RTL
       localizationsDelegates: [

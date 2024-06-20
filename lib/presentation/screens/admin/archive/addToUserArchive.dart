@@ -31,7 +31,7 @@ class AddToUserArchive extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: customAppBar('إضافة للأرشيف'),
+        appBar: customAppBar('إضافة للأرشيف', context, true),
         body: BlocBuilder<UserArchiveCubit, UserArchiveState>(
           builder: (context, state) {
             return Column(

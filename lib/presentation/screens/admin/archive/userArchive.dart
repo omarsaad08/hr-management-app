@@ -38,7 +38,7 @@ class _UserArchiveState extends State<UserArchive> {
   Widget build(BuildContext context) {
     final userArchiveCubit = context.read<UserArchiveCubit>();
     return Scaffold(
-        appBar: customAppBar(widget.userName),
+        appBar: customAppBar(widget.userName, context, true),
         body: BlocListener<UserArchiveCubit, UserArchiveState>(
           listener: (context, state) {
             if (state is UserArchiveImagesLoaded) {

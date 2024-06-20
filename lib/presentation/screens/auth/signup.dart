@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:hr_management_app/data/web_services/auth.dart';
+import 'package:hr_management_app/data/web_services/auth_web_services.dart';
 
 class Signup extends StatefulWidget {
   const Signup({super.key});
