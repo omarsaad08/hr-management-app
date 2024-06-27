@@ -5,7 +5,7 @@ Color clr(int colorNum) {
     case 1:
       return Color(0xff232D5C);
     case 2:
-      return Color(0xfffec81e);
+      return Color(0xff0066CC);
     case 3:
       return Color(0xffb4b8c5);
     case 4:
@@ -15,3 +15,4 @@ Color clr(int colorNum) {
   }
   return Colors.black;
 }
+// fec81e

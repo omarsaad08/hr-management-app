@@ -1,4 +1,6 @@
 import 'package:bloc/bloc.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:hr_management_app/data/web_services/archive_web_services.dart';
 
 abstract class UserArchiveState {}
@@ -34,6 +36,8 @@ class UserArchiveImagesError extends UserArchiveState {
 // -----------------------------------
 class UserArchiveUserAdded extends UserArchiveState {}
 
+class UserArchiveAddingUser extends UserArchiveState {}
+
 class UserArchiveAddUserError extends UserArchiveState {
   final String message;
   UserArchiveAddUserError({required this.message});
@@ -52,6 +56,10 @@ class UserArchiveCubit extends Cubit<UserArchiveState> {
   ArchiveWebServices archiveWebServices;
   UserArchiveCubit({required this.archiveWebServices})
       : super(UserArchiveInitial());
+  Future<void> emitUserSearchInitial(BuildContext context) async {
+    emit(UserArchiveInitial());
+  }
+
   void getDoc({required String id}) async {
     emit(UserArchiveLoading());
     try {
@@ -76,6 +84,7 @@ class UserArchiveCubit extends Cubit<UserArchiveState> {
   }
 
   void addUser(String userId) async {
+    emit(UserArchiveAddingUser());
     try {
       final data = await archiveWebServices.addUser(userId: userId);
       emit(UserArchiveUserAdded());

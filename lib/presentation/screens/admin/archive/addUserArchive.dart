@@ -19,9 +19,8 @@ class AddUserArchive extends StatelessWidget {
         builder: (context, state) {
           if (state is UserArchiveAddUserError) {
             return Text('error ${state.message}');
-          } else if (state is UserArchiveUserAdded) {
-            return Text('user added to archive');
           } else {
+            print(state);
             return Center(
               child: Container(
                 width: 600,
@@ -32,6 +31,11 @@ class AddUserArchive extends StatelessWidget {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
+                    state is UserArchiveUserAdded
+                        ? Text('تم إضافة الموظف')
+                        : state is UserArchiveAddingUser
+                            ? CircularProgressIndicator()
+                            : Container(),
                     Text(
                       "أدخل كود الموظف",
                       style: TextStyle(fontSize: 36),

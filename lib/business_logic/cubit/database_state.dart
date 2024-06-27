@@ -32,6 +32,8 @@ class DatabaseGettingEmployeeError extends DatabaseState {
 }
 
 // -----------------------------
+class DatabaseAddEmployeeInitial extends DatabaseState {}
+
 class DatabaseAddingEmployee extends DatabaseState {}
 
 class DatabaseAddedEmployee extends DatabaseState {

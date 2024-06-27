@@ -13,6 +13,6 @@ Widget customButton({
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(16))),
       child: Text(label,
           style: TextStyle(
-              color: clr(0), fontSize: 22, fontWeight: FontWeight.bold)),
+              color: clr(5), fontSize: 18, fontWeight: FontWeight.normal)),
       onPressed: onPressed);
 }

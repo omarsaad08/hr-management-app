@@ -33,34 +33,24 @@ class AppRouter {
           builder: (context) => AdminHome(),
         );
       case '/archive_search':
-        return MaterialPageRoute(
-          builder: (_) => BlocProvider<UserArchiveCubit>(
-            create: (context) => userArchiveCubit,
-            child: ArchiveSearch(),
-          ),
-        );
+        return MaterialPageRoute(builder: (context) => ArchiveSearch());
       case '/user_archive':
         final data = settings.arguments as String;
         return MaterialPageRoute(
-          builder: (_) => BlocProvider<UserArchiveCubit>(
-            create: (context) => userArchiveCubit,
-            child: UserArchive(userName: data),
-          ),
-        );
+            builder: (context) => UserArchive(userName: data));
       case '/archive_document':
+        final routeData = settings.arguments as List;
+        return MaterialPageRoute(
+            builder: (context) => ArchiveDocument(
+                  data: routeData[0],
+                  dataName: routeData[1],
+                  userId: routeData[2],
+                  dataCategory: routeData[3],
+                ));
+      case '/add_to_user_archive':
         final data = settings.arguments as List;
         return MaterialPageRoute(
-          builder: (_) => BlocProvider<UserArchiveCubit>(
-            create: (context) => userArchiveCubit,
-            child: ArchiveDocument(data: data),
-          ),
-        );
-      case '/add_to_user_archive':
-        return MaterialPageRoute(
-            builder: (_) => BlocProvider<UserArchiveCubit>(
-                  create: (context) => userArchiveCubit,
-                  child: AddToUserArchive(),
-                ));
+            builder: (context) => AddToUserArchive(doc: data[0], id: data[1]));
       case '/add_user_archive':
         return MaterialPageRoute(
             builder: (_) => BlocProvider<UserArchiveCubit>(
@@ -69,18 +59,16 @@ class AppRouter {
       case '/database_home':
         return MaterialPageRoute(
             builder: (_) => BlocProvider<DatabaseCubit>(
-                  create: (context) {
-                    databaseCubit =
-                        DatabaseCubit(databaseWebServices: databaseWebServices);
-                    return DatabaseCubit(
-                        databaseWebServices: databaseWebServices);
-                  },
+                  create: (context) =>
+                      DatabaseCubit(databaseWebServices: databaseWebServices),
                   child: DatabaseHome(),
                 ));
       case '/database_add_employee':
         return MaterialPageRoute(
             builder: (_) => BlocProvider<DatabaseCubit>(
-                create: (context) => databaseCubit, child: AddEmployee()));
+                create: (context) =>
+                    DatabaseCubit(databaseWebServices: databaseWebServices),
+                child: AddEmployee()));
       default:
     }
   }

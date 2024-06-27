@@ -49,9 +49,10 @@ class _AddEmployeeState extends State<AddEmployee> {
 
   @override
   Widget build(BuildContext context) {
+    context.read<DatabaseCubit>().addEmployeeInitial();
     return Scaffold(
         backgroundColor: clr(3),
-        appBar: customAppBar('إضافة موظف', context, false),
+        appBar: customAppBar('إضافة موظف', context, true),
         body: BlocBuilder<DatabaseCubit, DatabaseState>(
           builder: (context, state) {
             if (state is DatabaseAddingEmployee) {
@@ -60,32 +61,39 @@ class _AddEmployeeState extends State<AddEmployee> {
               );
             } else {
               return customContainer(
-                  width: double.infinity,
+                  width: 1000,
                   height: double.infinity,
                   child: ListView(children: [
-                    customButton(
-                        label: 'back',
-                        onPressed: () {
-                          Navigator.pop(context);
-                        }),
+                    Center(
+                      child: Text('بيانات الموظف',
+                          style: TextStyle(
+                              fontSize: 36, fontWeight: FontWeight.w500)),
+                    ),
                     customTextField(
                         controller: nameController, label: 'اسم الموظف'),
+                    SizedBox(height: 24),
                     customTextField(
                         controller: nationalIdController,
                         label: 'الرقم القومي'),
+                    SizedBox(height: 24),
                     customTextField(
                         controller: insuranceNumberController,
                         label: 'الرقم التأميني'),
+                    SizedBox(height: 24),
                     customTextField(
                         controller: functionalGroupController,
                         label: 'المجموعة الوظيفية'),
+                    SizedBox(height: 24),
                     customTextField(
                         controller: jobTitleController,
                         label: 'المسمى الوظيفي'),
+                    SizedBox(height: 24),
                     customTextField(
                         controller: degreeController, label: 'المؤهل'),
+                    SizedBox(height: 24),
                     customTextField(
                         controller: addressController, label: 'العنوان'),
+                    SizedBox(height: 24),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -104,44 +112,42 @@ class _AddEmployeeState extends State<AddEmployee> {
                             onPressed: () async {
                               await selectDate(context, 3);
                             }),
-                        customButton(
-                            label: 'إضافة',
-                            onPressed: () {
-                              Map<String, dynamic> employeeData = {
-                                "name": nameController.text,
-                                "nationalIDNumber": nationalIdController.text,
-                                "dateOfAppointment":
-                                    dateOfAppointmentController.toString(),
-                                "insuranceNumber":
-                                    insuranceNumberController.text,
-                                "contractDate":
-                                    contractDateController.toString(),
-                                "functionalGroup":
-                                    functionalGroupController.text,
-                                "jobTitle": jobTitleController.text,
-                                "degree": degreeController.text,
-                                "address": addressController.text,
-                                "dateOfLastPromotion":
-                                    dateOfLastPromotionController.toString()
-                              };
-                              context
-                                  .read<DatabaseCubit>()
-                                  .addEmployee(employeeData: employeeData);
-
-                              nameController.text = '';
-                              nationalIdController.text = '';
-                              insuranceNumberController.text = '';
-                              functionalGroupController.text = '';
-                              jobTitleController.text = '';
-                              degreeController.text = '';
-                              addressController.text = '';
-                              dateOfAppointmentController = null;
-                              contractDateController = null;
-                              dateOfLastPromotionController = null;
-                            }),
                       ],
                     ),
-                    Text(state.toString()),
+                    SizedBox(
+                      height: 16,
+                    ),
+                    customButton(
+                        label: 'إضافة',
+                        onPressed: () {
+                          Map<String, dynamic> employeeData = {
+                            "name": nameController.text,
+                            "nationalIDNumber": nationalIdController.text,
+                            "dateOfAppointment":
+                                dateOfAppointmentController.toString(),
+                            "insuranceNumber": insuranceNumberController.text,
+                            "contractDate": contractDateController.toString(),
+                            "functionalGroup": functionalGroupController.text,
+                            "jobTitle": jobTitleController.text,
+                            "degree": degreeController.text,
+                            "address": addressController.text,
+                            "dateOfLastPromotion":
+                                dateOfLastPromotionController.toString()
+                          };
+                          context
+                              .read<DatabaseCubit>()
+                              .addEmployee(employeeData: employeeData);
+                          nameController.text = '';
+                          nationalIdController.text = '';
+                          insuranceNumberController.text = '';
+                          functionalGroupController.text = '';
+                          jobTitleController.text = '';
+                          degreeController.text = '';
+                          addressController.text = '';
+                          dateOfAppointmentController = null;
+                          contractDateController = null;
+                          dateOfLastPromotionController = null;
+                        }),
                   ]));
             }
           },

@@ -56,9 +56,8 @@ class ArchiveWebServices {
           data: json.encode({'userId': userId}));
       return response.data;
     } catch (e) {
-      print('error adding a user');
+      throw Exception('error adding a user');
     }
-    return 'error';
   }
 
   Future<String> postImage(
@@ -70,6 +69,7 @@ class ArchiveWebServices {
       FormData formData = FormData.fromMap({
         'userId': userId,
         'filetype': filetype,
+        'filename': filename,
         'file': await MultipartFile.fromFile(filePath, filename: filename),
       });
       Response response = await dio.post(

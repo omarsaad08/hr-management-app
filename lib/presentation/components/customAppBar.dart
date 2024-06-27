@@ -2,7 +2,8 @@
 import 'package:flutter/material.dart';
 import 'package:hr_management_app/presentation/components/theme.dart';
 
-AppBar customAppBar(String title, context, bool showLeading) {
+AppBar customAppBar(String title, context, bool showLeading,
+    {VoidCallback? onPop}) {
   return AppBar(
     elevation: 10,
     backgroundColor: clr(1),
@@ -15,6 +16,9 @@ AppBar customAppBar(String title, context, bool showLeading) {
             ),
             onPressed: () {
               if (Navigator.canPop(context)) {
+                if (onPop != null) {
+                  onPop();
+                }
                 Navigator.pop(context);
               }
             },

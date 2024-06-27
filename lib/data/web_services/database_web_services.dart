@@ -28,7 +28,8 @@ class DatabaseWebServices {
 
   Future<List> getEmployee({required String id}) async {
     try {
-      Response response = await dio.get('employees/Details/$id');
+      Response response =
+          await dio.get('http://16.171.199.210:3000/employees/Details/$id');
       if (response.statusCode == 200) {
         return response.data;
       } else {
@@ -72,7 +73,8 @@ class DatabaseWebServices {
 
   Future<String> deleteEmployee({required String id}) async {
     try {
-      Response response = await dio.delete('employees/$id');
+      Response response =
+          await dio.delete('http://16.171.199.210:3000/employees/$id');
       if (response.statusCode == 200) {
         return "employee deleted Successfuly";
       } else {

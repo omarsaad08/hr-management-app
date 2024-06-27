@@ -9,7 +9,9 @@ environment:
 dependencies:
     bloc: ^8.1.4
     buffer: ^1.2.3
+    calendar_date_picker2: ^1.1.2
     dio: ^5.4.3+1
+    docx_template: ^0.4.0
     file_picker: ^8.0.5
     flutter:
         sdk: flutter
@@ -17,6 +19,8 @@ dependencies:
     flutter_localization: ^0.2.0
     flutter_secure_storage: ^9.2.2
     image: ^4.2.0
+    path_provider: ^2.1.3
+    pdf: ^3.10.8
 
 dev_dependencies:
     flutter_test:
@@ -25,6 +29,8 @@ dev_dependencies:
 
 flutter:
     uses-material-design: true
+    assets:
+        - images/
     fonts:
         - family: Hacen-Liner-Print-out
           fonts:

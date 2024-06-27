@@ -25,6 +25,7 @@ class _ArchiveSearchState extends State<ArchiveSearch> {
   TextEditingController idController = TextEditingController();
   @override
   Widget build(BuildContext context) {
+    context.read<UserArchiveCubit>().emitUserSearchInitial(context);
     return Scaffold(
       backgroundColor: clr(3),
       appBar: customAppBar('الأرشيف', context, true),
@@ -35,8 +36,6 @@ class _ArchiveSearchState extends State<ArchiveSearch> {
             BlocListener<UserArchiveCubit, UserArchiveState>(
               listener: (context, state) {
                 if (state is UserArchiveLoaded) {
-                  Navigator.pushNamed(context, '/user_archive',
-                      arguments: state.data);
                 } else if (state is UserArchiveError) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(content: Text(state.message)),
@@ -45,13 +44,20 @@ class _ArchiveSearchState extends State<ArchiveSearch> {
               },
               child: BlocBuilder<UserArchiveCubit, UserArchiveState>(
                 builder: (context, state) {
-                  if (state is UserArchiveInitial) {
+                  if (state is UserArchiveLoading) {
+                    return Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  } else {
                     return customContainer(
                         width: 600,
                         height: 400,
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
+                            // state is UserArchiveError
+                            //     ? Text(state.message)
+                            //     : Container(),
                             Text(
                               "أدخل كود الموظف",
                               style: TextStyle(fontSize: 36),
@@ -70,6 +76,8 @@ class _ArchiveSearchState extends State<ArchiveSearch> {
                                   context
                                       .read<UserArchiveCubit>()
                                       .getDoc(id: idController.text);
+                                  Navigator.pushNamed(context, '/user_archive',
+                                      arguments: idController.text);
                                 }),
                             SizedBox(height: 20),
                             customButton(
@@ -80,10 +88,6 @@ class _ArchiveSearchState extends State<ArchiveSearch> {
                                 })
                           ],
                         ));
-                  } else if (state is UserArchiveLoading) {
-                    return CircularProgressIndicator();
-                  } else {
-                    return Container();
                   }
                 },
               ),
