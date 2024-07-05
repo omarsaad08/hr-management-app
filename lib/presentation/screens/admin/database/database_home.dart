@@ -19,17 +19,29 @@ class DatabaseHome extends StatefulWidget {
 
 class _DatabaseHomeState extends State<DatabaseHome> {
   Map arabicToEnglishDataNames = {
-    'ID': 'ID',
+    'ID': 'employeeid',
     'الاسم': 'name',
     'الرقم القومي': 'nationalidnumber',
-    'تاريخ التعيين': 'dateofappointment',
+    'تاريخ استلام العمل': 'dateofappointment',
+    'العنوان': 'address',
     'الرقم التأميني': 'insurancenumber',
-    'تاريه التعاقد': 'contractdate',
+    'تاريخ التعيين / التعاقد': 'contractdate',
     'المجموعة الوظيفية': 'functionalgroup',
     'المسمى الوظيفي': 'jobtitle',
-    'المؤهل': 'degree',
-    'العنوان': 'address',
-    'dateoflastpromotion': 'تاريخ اخر ترقية'
+    'الدرجة الوظيفية': 'degree',
+    'تاريخ اخر ترقية': 'dateoflastpromotion',
+    'النوع': 'gender',
+    'الديانة': 'religion',
+    'تاريخ الميلاد': 'date_of_birth',
+    'رقم الهاتف': 'phone_number',
+    'الحالة من التجنيد': 'military_service_status',
+    'المجموعة النوعية': 'jobcategory',
+    'الادارة': 'administration',
+    'الوظيفة الحالية': 'currentjob',
+    'المؤهل': 'qualification',
+    'نوع العقد': 'typeofcontract',
+    'اخر تقرير': 'report',
+    'الحالة من العمل': 'employmentstatus'
   };
   TextEditingController deleteController = TextEditingController();
   TextEditingController searchController = TextEditingController();
@@ -69,8 +81,8 @@ class _DatabaseHomeState extends State<DatabaseHome> {
   }
 
   // === make statistics === //
+  String selectedItem = 'تاريخ التعيين';
   void makeStatistics(List data) {
-    String selectedItem = 'تاريخ التعيين';
     List wantedItems = [];
     List<DropdownMenuItem<String>> items = [
       DropdownMenuItem(value: 'تاريخ التعيين', child: Text('تاريخ التعيين')),
@@ -150,6 +162,20 @@ class _DatabaseHomeState extends State<DatabaseHome> {
 
   @override
   Widget build(BuildContext context) {
+    List<DataColumn> columns = [];
+    arabicToEnglishDataNames.keys.forEach(
+      (element) {
+        columns.add(DataColumn(label: Text(element)));
+      },
+    );
+    List<DataCell> createRow(Map item) {
+      List<DataCell> row = [];
+      arabicToEnglishDataNames.values.forEach((element) {
+        row.add(DataCell(Text(item[element].toString())));
+      });
+      return row;
+    }
+
     return Scaffold(
         backgroundColor: clr(4),
         appBar: customAppBar('قاعدة البيانات', context, true),
@@ -162,7 +188,8 @@ class _DatabaseHomeState extends State<DatabaseHome> {
                   children: [
                     Container(
                       margin: EdgeInsets.symmetric(vertical: 16),
-                      child: Row(
+                      child: Wrap(
+                        runSpacing: 12,
                         children: [
                           IconButton(
                               onPressed: () {
@@ -214,25 +241,29 @@ class _DatabaseHomeState extends State<DatabaseHome> {
                                 icon: true,
                                 fieldIcon: Icon(Icons.search)),
                           ),
+
+                          SizedBox(width: 16),
+
+                          // employee status generation
+                          customButton(
+                              label: 'بيان حالة وظيفية',
+                              onPressed: () {
+                                buildEmployeeStatusFile(state.data);
+                              }),
+                          SizedBox(width: 16),
+                          // statistics generation
+                          customButton(
+                              label: 'إحصائية',
+                              onPressed: () {
+                                makeStatistics(state.data);
+                                // Navigator.pushNamed(
+                                //     context, '/database_statistics');
+                              })
                         ],
                       ),
                     ),
                     Row(
-                      children: [
-                        // employee status generation
-                        customButton(
-                            label: 'بيان حالة وظيفية',
-                            onPressed: () {
-                              buildEmployeeStatusFile(state.data);
-                            }),
-                        SizedBox(width: 16),
-                        // statistics generation
-                        customButton(
-                            label: 'إحصائية',
-                            onPressed: () {
-                              makeStatistics(state.data);
-                            })
-                      ],
+                      children: [],
                     ),
                     SizedBox(
                       height: 16,
@@ -241,19 +272,7 @@ class _DatabaseHomeState extends State<DatabaseHome> {
                       scrollDirection: Axis.horizontal,
                       child: DataTable(
                         border: TableBorder.all(color: clr(3), width: 1),
-                        columns: const [
-                          DataColumn(label: Text('ID')),
-                          DataColumn(label: Text('الاسم')),
-                          DataColumn(label: Text('الرقم القومي')),
-                          DataColumn(label: Text('تاريخ التعيين')),
-                          DataColumn(label: Text('الرقم التأميني')),
-                          DataColumn(label: Text('تاريخ التعاقد')),
-                          DataColumn(label: Text('المجموعة الوظيفية')),
-                          DataColumn(label: Text('المسمى الوظيفي')),
-                          DataColumn(label: Text('المؤهل')),
-                          DataColumn(label: Text('العنوان')),
-                          DataColumn(label: Text('تاريخ اخر ترقية')),
-                        ],
+                        columns: columns,
                         rows: state.data.map((item) {
                           item['dateofappointment'] = item['dateofappointment']
                               .toString()
@@ -264,20 +283,10 @@ class _DatabaseHomeState extends State<DatabaseHome> {
                               item['dateoflastpromotion']
                                   .toString()
                                   .split('T')[0];
+                          item['date_of_birth'] =
+                              item['date_of_birth'].toString().split('T')[0];
                           return DataRow(
-                            cells: [
-                              DataCell(Text(item['employeeid'].toString())),
-                              DataCell(Text(item['name'])),
-                              DataCell(Text(item['nationalidnumber'])),
-                              DataCell(Text(item['dateofappointment'])),
-                              DataCell(Text(item['insurancenumber'])),
-                              DataCell(Text(item['contractdate'])),
-                              DataCell(Text(item['functionalgroup'])),
-                              DataCell(Text(item['jobtitle'])),
-                              DataCell(Text(item['degree'])),
-                              DataCell(Text(item['address'])),
-                              DataCell(Text(item['dateoflastpromotion'])),
-                            ],
+                            cells: createRow(item),
                           );
                         }).toList(),
                       ),

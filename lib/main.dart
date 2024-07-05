@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hr_management_app/app_router.dart';
+import 'package:hr_management_app/business_logic/cubit/transactions_cubit.dart';
 import 'package:hr_management_app/business_logic/cubit/user_archive_cubit.dart';
 import 'package:hr_management_app/data/web_services/archive_web_services.dart';
+import 'package:hr_management_app/data/web_services/transactions_web_services.dart';
 import 'package:hr_management_app/presentation/components/theme.dart';
 
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -35,6 +37,9 @@ class HRManagementApp extends StatelessWidget {
           create: (context) =>
               UserArchiveCubit(archiveWebServices: ArchiveWebServices()),
         ),
+        BlocProvider<TransactionsCubit>(
+            create: (context) => TransactionsCubit(
+                transactionsWebServices: TransactionsWebServices()))
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

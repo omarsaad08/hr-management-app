@@ -9,42 +9,187 @@ import 'package:calendar_date_picker2/calendar_date_picker2.dart';
 import 'package:hr_management_app/presentation/components/theme.dart';
 
 class AddEmployee extends StatefulWidget {
-  const AddEmployee({super.key});
+  AddEmployee({super.key});
 
   @override
   State<AddEmployee> createState() => _AddEmployeeState();
 }
 
 class _AddEmployeeState extends State<AddEmployee> {
-  TextEditingController nameController = TextEditingController();
-  TextEditingController nationalIdController = TextEditingController();
-  TextEditingController insuranceNumberController = TextEditingController();
-  TextEditingController functionalGroupController = TextEditingController();
-  TextEditingController jobTitleController = TextEditingController();
-  TextEditingController degreeController = TextEditingController();
-  TextEditingController addressController = TextEditingController();
-  DateTime? dateOfAppointmentController;
-  DateTime? contractDateController;
-  DateTime? dateOfLastPromotionController;
+  Map<String, dynamic> controllers = {};
+  Map arabicToEnglishDataNames = {
+    // 'ID': 'employeeid',
+    'الاسم': 'name',
+    'الرقم القومي': 'nationalidnumber',
+    'الرقم التأميني': 'insurancenumber',
+    'المجموعة الوظيفية': 'functionalgroup',
+    'المجموعة النوعية': 'jobcategory',
+    'المسمى الوظيفي': 'jobtitle',
+    'الدرجة الوظيفية': 'degree',
+    'العنوان': 'address',
+    'النوع': 'gender',
+    'الديانة': 'religion',
+    'رقم الهاتف': 'phone_number',
+    'الحالة من التجنيد': 'military_service_status',
+    'الادارة': 'administration',
+    'الوظيفة الحالية': 'currentjob',
+    'المؤهل': 'qualification',
+    'نوع العقد': 'typeofcontract',
+    'اخر تقرير': 'report',
+    'الحالة من العمل': 'employmentstatus',
+    'تاريخ استلام العمل': 'dateofappointment',
+    'تاريخ التعيين / التعاقد': 'contractdate',
+    'تاريخ الميلاد': 'date_of_birth',
+    'تاريخ اخر ترقية': 'dateoflastpromotion',
+  };
+  Map<String, dynamic> optionsCategories = {
+    'functionalgroup': [
+      'استشاري',
+      'تخصصية',
+      'فنية',
+      'مكتبية',
+      'حرفية',
+      'خدمات معاونة'
+    ],
+    'degree': [
+      'عليا',
+      'مدير عام',
+      'الأولى-أ',
+      'الأولى-ب',
+      'الثانية-أ',
+      'الثانية-ب',
+      'الثانية-ج',
+      'الثالثة-أ',
+      'الثالثة-ب',
+      'الثالثة-ج',
+      'الرابعة-أ',
+      'الرابعة-ب',
+      'الرابعة-ج',
+      'الخامسة-أ',
+      'الخامسة-ب',
+      'الخامسة-ج',
+      'السادسة-أ',
+      'السادسة-ب',
+      'السادسة-ج'
+    ],
+    'gender': ['ذكر', 'أنثى'],
+    'religion': ['مسلم', 'مسيحي'],
+    'military_service_status': ['معفى', 'أدى الخدمة'],
+    'jobcategory': {
+      'استشاري': ['مدير عام'],
+      'تخصصية': [
+        'اقتصاد وتجارة',
+        'قانون',
+        'إعلام',
+        'الأمن',
+        'خدمة إجتماعية',
+        'تنمية إدارية',
+        'هندسية',
+        'تمويل ومحاسبة'
+      ],
+      'مكتبية': [
+        'كاتب عقود مشتريات',
+        'كاتب سجلات',
+        'كاتب سجلات',
+        'كاتب شطب',
+        'كاتب شئون عاملين',
+        'كاتب سكرتارية',
+        'كاتب حسابات',
+        'محصل',
+        'صراف'
+      ],
+      'فنية': ['هندسة مساعدة', 'خدمة إجتماعية', 'فنون وعمارة', 'زراعة'],
+      'حرفية': ['حركة ونقل', 'زراعة وتغذية', 'ورش وآلات'],
+      'خدمات معاونة': ['خدمات معاونة']
+    },
+    'administration': [
+      'إيرادات الرسوم والتحصيل',
+      'الخزينة',
+      'مركز تكنولوجي لخدمة المواطنين',
+      'مركز المعلومات والتحول الرقمي',
+      'المتابعة الميدانية',
+      'الشئون الإدارية',
+      'شئون المقر'
+          'الأمن',
+      'التقييم والمتابعة',
+      'الإدارة الهندسية',
+      'الشئون القانونية',
+      'شئون البيئة',
+      'الحسابات',
+      'الموارد البشرية',
+      'المخازن',
+      'العقود والمشتريات',
+      'الميزانية',
+      'التخطيط والمتابعة'
+    ],
+    // 'qualification': [
+
+    // ],
+    'typeofcontract': [
+      'مخابز',
+      'محاجر',
+      'شاليهات',
+      'دواجن وإنتاج حيواني',
+      'الأسواق',
+      'تجميل ونضافة',
+      'عقود مقننة',
+      'عقود غير مقننة',
+    ],
+    'report': [
+      'امتياز',
+      'كفء',
+      'فوق متوسط',
+      'متوسط',
+      'ضعيف',
+    ],
+    'employmentstatus': [
+      'على رأس العمل',
+      'منتدب',
+      'معار',
+      'إجازة خاصة',
+      'رعاية طفل',
+      'إيقاف عن العمل',
+      'إجازة إستثنائية',
+    ],
+  };
+  Map<String, String?> selectedDropdownValues = {};
   bool employeeAdded = false;
-  Future<void> selectDate(BuildContext context, int num) async {
+  Future<DateTime?> selectDate(BuildContext context) async {
     final DateTime? pickedDate = await showDatePicker(
       context: context,
       initialDate: DateTime.now(),
       firstDate: DateTime(1960),
       lastDate: DateTime(2100),
     );
-    switch (num) {
-      case 1:
-        dateOfAppointmentController = pickedDate;
-        break;
-      case 2:
-        contractDateController = pickedDate;
-        break;
-      case 3:
-        dateOfLastPromotionController = pickedDate;
-        break;
+    if (pickedDate == null) {
+      return DateTime.now();
+    } else {
+      return pickedDate;
     }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    initializeDropdownValues();
+    arabicToEnglishDataNames.values.forEach((dataName) {
+      if (!dataName.toString().contains('date') &&
+          !optionsCategories.keys.toList().contains(dataName)) {
+        controllers[dataName] = TextEditingController();
+      }
+    });
+  }
+
+  void initializeDropdownValues() {
+    // Initialize selectedDropdownValues for each dropdown
+    optionsCategories.forEach((key, value) {
+      if (value is List) {
+        selectedDropdownValues[key] = value[0];
+      } else {
+        selectedDropdownValues[key] =
+            value[selectedDropdownValues['functionalgroup']][0];
+      }
+    });
   }
 
   @override
@@ -63,56 +208,95 @@ class _AddEmployeeState extends State<AddEmployee> {
               return customContainer(
                   width: 1000,
                   height: double.infinity,
-                  child: ListView(children: [
+                  child: Column(children: [
                     Center(
                       child: Text('بيانات الموظف',
                           style: TextStyle(
                               fontSize: 36, fontWeight: FontWeight.w500)),
                     ),
-                    customTextField(
-                        controller: nameController, label: 'اسم الموظف'),
-                    SizedBox(height: 24),
-                    customTextField(
-                        controller: nationalIdController,
-                        label: 'الرقم القومي'),
-                    SizedBox(height: 24),
-                    customTextField(
-                        controller: insuranceNumberController,
-                        label: 'الرقم التأميني'),
-                    SizedBox(height: 24),
-                    customTextField(
-                        controller: functionalGroupController,
-                        label: 'المجموعة الوظيفية'),
-                    SizedBox(height: 24),
-                    customTextField(
-                        controller: jobTitleController,
-                        label: 'المسمى الوظيفي'),
-                    SizedBox(height: 24),
-                    customTextField(
-                        controller: degreeController, label: 'المؤهل'),
-                    SizedBox(height: 24),
-                    customTextField(
-                        controller: addressController, label: 'العنوان'),
-                    SizedBox(height: 24),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        customButton(
-                            label: 'اختيار تاريخ التعيين',
-                            onPressed: () async {
-                              await selectDate(context, 1);
-                            }),
-                        customButton(
-                            label: 'اختيار تاريخ التعاقد',
-                            onPressed: () async {
-                              await selectDate(context, 2);
-                            }),
-                        customButton(
-                            label: 'اختيار تاريخ اخر ترقية',
-                            onPressed: () async {
-                              await selectDate(context, 3);
-                            }),
-                      ],
+                    Expanded(
+                      child: ListView.builder(
+                        itemCount: arabicToEnglishDataNames.length,
+                        itemBuilder: (context, index) {
+                          final dataName = arabicToEnglishDataNames.values
+                              .toList()[index]
+                              .toString();
+                          String selectedgroup =
+                              optionsCategories['functionalgroup'][0];
+                          if (dataName.contains('date')) {
+                            return Container(
+                              margin: EdgeInsets.only(bottom: 12),
+                              child: customButton(
+                                  label: arabicToEnglishDataNames.keys
+                                      .toList()[index]
+                                      .toString(),
+                                  onPressed: () async {
+                                    controllers[dataName] =
+                                        await selectDate(context);
+                                  }),
+                            );
+                          } else if (optionsCategories.keys
+                              .toList()
+                              .contains(dataName)) {
+                            List<DropdownMenuItem<String>> items = [];
+                            String? selectedItem;
+                            if (dataName == 'jobcategory') {
+                              for (var element in optionsCategories[dataName]
+                                  [selectedDropdownValues['functionalgroup']]) {
+                                selectedItem = optionsCategories[dataName][
+                                    selectedDropdownValues[
+                                        'functionalgroup']][0];
+                                items.add(DropdownMenuItem(
+                                    value: element, child: Text(element)));
+                              }
+                            } else {
+                              for (var element in optionsCategories[dataName]) {
+                                selectedItem = optionsCategories[dataName][0];
+                                items.add(DropdownMenuItem(
+                                    value: element, child: Text(element)));
+                              }
+                            }
+                            return Row(
+                              children: [
+                                Text(arabicToEnglishDataNames.keys
+                                    .toList()[index]),
+                                SizedBox(
+                                  width: 16,
+                                ),
+                                Expanded(
+                                  child: DropdownButton(
+                                      isExpanded: true,
+                                      value: selectedDropdownValues[dataName],
+                                      items: items,
+                                      onChanged: (value) {
+                                        setState(() {
+                                          selectedDropdownValues[dataName] =
+                                              value;
+                                          if (dataName == 'functionalgroup') {
+                                            selectedDropdownValues[
+                                                    'jobcategory'] =
+                                                optionsCategories['jobcategory']
+                                                    [selectedDropdownValues[
+                                                        'functionalgroup']][0];
+                                          }
+                                          controllers = controllers;
+                                        });
+                                      }),
+                                ),
+                              ],
+                            );
+                          } else {
+                            return Container(
+                              margin: EdgeInsets.only(bottom: 12),
+                              child: customTextField(
+                                  controller: controllers[dataName]!,
+                                  label: arabicToEnglishDataNames.keys
+                                      .toList()[index]
+                                      .toString()),
+                            );
+                          }
+                        },
+                      ),
                     ),
                     SizedBox(
                       height: 16,
@@ -120,33 +304,32 @@ class _AddEmployeeState extends State<AddEmployee> {
                     customButton(
                         label: 'إضافة',
                         onPressed: () {
-                          Map<String, dynamic> employeeData = {
-                            "name": nameController.text,
-                            "nationalIDNumber": nationalIdController.text,
-                            "dateOfAppointment":
-                                dateOfAppointmentController.toString(),
-                            "insuranceNumber": insuranceNumberController.text,
-                            "contractDate": contractDateController.toString(),
-                            "functionalGroup": functionalGroupController.text,
-                            "jobTitle": jobTitleController.text,
-                            "degree": degreeController.text,
-                            "address": addressController.text,
-                            "dateOfLastPromotion":
-                                dateOfLastPromotionController.toString()
-                          };
+                          Map<String, dynamic> employeeData = {};
+                          // parsing data
+                          for (var element
+                              in arabicToEnglishDataNames.values.toList()) {
+                            if (optionsCategories.keys
+                                .toList()
+                                .contains(element)) {
+                              employeeData['$element'] =
+                                  selectedDropdownValues[element];
+                            } else if (!element.toString().contains('date')) {
+                              employeeData['$element'] =
+                                  controllers['$element']?.text;
+                            } else {
+                              employeeData['$element'] = controllers['$element']
+                                  .toString()
+                                  .split(' ')[0];
+                              if (employeeData[element] == 'null') {
+                                employeeData[element] =
+                                    DateTime.now().toString();
+                              }
+                            }
+                          }
+                          print(employeeData);
                           context
                               .read<DatabaseCubit>()
                               .addEmployee(employeeData: employeeData);
-                          nameController.text = '';
-                          nationalIdController.text = '';
-                          insuranceNumberController.text = '';
-                          functionalGroupController.text = '';
-                          jobTitleController.text = '';
-                          degreeController.text = '';
-                          addressController.text = '';
-                          dateOfAppointmentController = null;
-                          contractDateController = null;
-                          dateOfLastPromotionController = null;
                         }),
                   ]));
             }

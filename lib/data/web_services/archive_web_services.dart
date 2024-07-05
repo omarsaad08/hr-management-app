@@ -18,7 +18,8 @@ class ArchiveWebServices {
 
   Future<String> getDoc({required String id}) async {
     try {
-      Response response = await dio.get('http://localhost:3000/archive/$id');
+      Response response =
+          await dio.get('http://16.171.199.210:3000/archive/$id');
       print('data: ${response.data}');
       return response.data!;
     } catch (e) {
@@ -29,7 +30,7 @@ class ArchiveWebServices {
   Future<List> getImages({required String doc, required String id}) async {
     try {
       Response response =
-          await dio.get('http://localhost:3000/archive/$id/$doc');
+          await dio.get('http://16.171.199.210:3000/archive/$id/$doc');
       if (response.statusCode == 200) {
         print('got data, length: ${response.data.length}');
         for (var i = 0; i < response.data.length; i++) {
@@ -46,17 +47,17 @@ class ArchiveWebServices {
   }
 
   Future<String> addUser({required String userId}) async {
-    print('user id from web services: ${userId}');
     try {
       FormData formData = FormData.fromMap({
         'userId': userId,
       });
       Response response = await dio.post(
-          'http://localhost:3000/archive/addUser',
+          'http://16.171.199.210:3000/archive/addUser',
           data: json.encode({'userId': userId}));
+      print('response: ${response.data} ');
       return response.data;
     } catch (e) {
-      throw Exception('error adding a user');
+      throw Exception('error adding a user ${e}');
     }
   }
 
@@ -73,7 +74,7 @@ class ArchiveWebServices {
         'file': await MultipartFile.fromFile(filePath, filename: filename),
       });
       Response response = await dio.post(
-          'http://localhost:3000/archive/addToUserArchive',
+          'http://16.171.199.210:3000/archive/addToUserArchive',
           data: formData,
           options: Options(headers: {'Content-Type': 'multipart/form-data'}));
       return response.data;

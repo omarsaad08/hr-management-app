@@ -55,7 +55,6 @@ class DatabaseCubit extends Cubit<DatabaseState> {
     emit(DatabaseAddingEmployee());
 
     try {
-      print('going to add');
       final data =
           await databaseWebServices.addEmployee(employeeData: employeeData);
       print('data: $data');
@@ -104,13 +103,13 @@ class DatabaseCubit extends Cubit<DatabaseState> {
           pw.Row(
               mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
               children: [
-                pw.Image(pw.MemoryImage(imageData), width: 100, height: 100),
                 pw.Column(children: [
                   pw.Text('محافظة السويس'),
                   pw.Text('رئاسة حي فيصل'),
                   pw.Text('إدارة الموارد البشرية'),
                   pw.Text('---------------------')
                 ]),
+                pw.Image(pw.MemoryImage(imageData), width: 100, height: 100),
               ]),
           pw.SizedBox(height: 16),
           pw.Row(mainAxisAlignment: pw.MainAxisAlignment.center, children: [
@@ -129,10 +128,16 @@ class DatabaseCubit extends Cubit<DatabaseState> {
           pw.Row(
             mainAxisAlignment: pw.MainAxisAlignment.center,
             children: [
-              pw.Text(
-                'بيانات شخصية',
-                style: style,
-              ),
+              pw.Container(
+                margin: pw.EdgeInsets.only(bottom: 8),
+                padding: pw.EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                decoration: pw.BoxDecoration(
+                    color: PdfColor.fromHex('#e9ebf8'),
+                    border: pw.Border.all(color: PdfColors.black, width: 1),
+                    borderRadius: pw.BorderRadius.circular(8)),
+                child:
+                    pw.Text('بيانات شخصية', style: pw.TextStyle(fontSize: 16)),
+              )
             ],
           ),
           pw.Table(
@@ -180,13 +185,20 @@ class DatabaseCubit extends Cubit<DatabaseState> {
               ),
             ],
           ),
+          pw.SizedBox(height: 16),
           pw.Row(
             mainAxisAlignment: pw.MainAxisAlignment.center,
             children: [
-              pw.Text(
-                'بيانات وظيفية',
-                style: style,
-              ),
+              pw.Container(
+                margin: pw.EdgeInsets.only(bottom: 8),
+                padding: pw.EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                decoration: pw.BoxDecoration(
+                    color: PdfColor.fromHex('#e9ebf8'),
+                    border: pw.Border.all(color: PdfColors.black, width: 1),
+                    borderRadius: pw.BorderRadius.circular(8)),
+                child:
+                    pw.Text('بيانات وظيفية', style: pw.TextStyle(fontSize: 16)),
+              )
             ],
           ),
           pw.Table(
@@ -196,19 +208,19 @@ class DatabaseCubit extends Cubit<DatabaseState> {
                 children: [
                   pw.Padding(
                     padding: const pw.EdgeInsets.all(8.0),
-                    child: pw.Text('${employeeInfo['nationalidnumber']}'),
+                    child: pw.Text('${employeeInfo['dateofappointment']}'),
                   ),
                   pw.Padding(
                     padding: const pw.EdgeInsets.all(8.0),
-                    child: pw.Text('تاريخ التعاقد'),
+                    child: pw.Text('تاريخ استلام العمل'),
                   ),
                   pw.Padding(
                     padding: const pw.EdgeInsets.all(8.0),
-                    child: pw.Text('${employeeInfo['name']}'),
+                    child: pw.Text('${employeeInfo['contractdate']}'),
                   ),
                   pw.Padding(
                     padding: const pw.EdgeInsets.all(8.0),
-                    child: pw.Text('تاريخ التعيين'),
+                    child: pw.Text('تاريخ التعيين / التعاقد'),
                   ),
                 ],
               ),
@@ -216,11 +228,31 @@ class DatabaseCubit extends Cubit<DatabaseState> {
                 children: [
                   pw.Padding(
                     padding: const pw.EdgeInsets.all(8.0),
-                    child: pw.Text('${employeeInfo['address']}'),
+                    child: pw.Text('${employeeInfo['jobcategory']}'),
                   ),
                   pw.Padding(
                     padding: const pw.EdgeInsets.all(8.0),
-                    child: pw.Text('العنوان'),
+                    child: pw.Text('المجموعة النوعية'),
+                  ),
+                  pw.Padding(
+                    padding: const pw.EdgeInsets.all(8.0),
+                    child: pw.Text('${employeeInfo['functionalgroup']}'),
+                  ),
+                  pw.Padding(
+                    padding: const pw.EdgeInsets.all(8.0),
+                    child: pw.Text('المجموعة الوظيفية'),
+                  ),
+                ],
+              ),
+              pw.TableRow(
+                children: [
+                  pw.Padding(
+                    padding: const pw.EdgeInsets.all(8.0),
+                    child: pw.Text('${employeeInfo['jobtitle']}'),
+                  ),
+                  pw.Padding(
+                    padding: const pw.EdgeInsets.all(8.0),
+                    child: pw.Text('المسمى الوظيفي'),
                   ),
                   pw.Padding(
                     padding: const pw.EdgeInsets.all(8.0),
@@ -228,22 +260,41 @@ class DatabaseCubit extends Cubit<DatabaseState> {
                   ),
                   pw.Padding(
                     padding: const pw.EdgeInsets.all(8.0),
-                    child: pw.Text('المؤهل'),
+                    child: pw.Text('الدرجة الوظيفية'),
+                  ),
+                ],
+              ),
+              pw.TableRow(
+                children: [
+                  pw.Padding(
+                    padding: const pw.EdgeInsets.all(8.0),
+                    child: pw.Text('لا يوجد'),
+                  ),
+                  pw.Padding(
+                    padding: const pw.EdgeInsets.all(8.0),
+                    child: pw.Text('الجزاءات'),
+                  ),
+                  pw.Padding(
+                    padding: const pw.EdgeInsets.all(8.0),
+                    child: pw.Text('${employeeInfo['report']}'),
+                  ),
+                  pw.Padding(
+                    padding: const pw.EdgeInsets.all(8.0),
+                    child: pw.Text('التقرير'),
                   ),
                 ],
               ),
             ],
           ),
-          pw.Text(
-              'تاريخ التعيين: ${employeeInfo['dateofappointment']} ، تاريخ التعاقد: ${employeeInfo['contractdate']}',
-              style: style),
-          pw.Text(
-              'المجموعة الوظيفية: ${employeeInfo['functionalgroup']} ، المسمى الوظيفي ${employeeInfo['jobtitle']}',
-              style: style),
-          pw.Text('المؤهل: ${employeeInfo['degree']}', style: style),
-          pw.Text('العنوان: ${employeeInfo['address']}', style: style),
-          pw.Text('تاريخ اخر ترقية: ${employeeInfo['dateoflastpromotion']}',
-              style: style),
+          pw.SizedBox(height: 8),
+          pw.Row(
+            mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+            children: [
+              pw.Text('مدير الموارد البشرية',
+                  style: pw.TextStyle(fontSize: 20)),
+              pw.Text('يعتمد')
+            ],
+          )
         ]));
   }
 
