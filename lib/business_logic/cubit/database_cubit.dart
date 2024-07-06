@@ -64,6 +64,20 @@ class DatabaseCubit extends Cubit<DatabaseState> {
     }
   }
 
+  Future<void> updateEmployee(
+      {required Map<String, dynamic> employeeData}) async {
+    emit(DatabaseAddingEmployee());
+
+    try {
+      final data =
+          await databaseWebServices.updateEmployee(employeeData: employeeData);
+      print('data: $data');
+      emit(DatabaseAddedEmployee(data: data));
+    } catch (e) {
+      emit(DatabaseAddingEmployeeError(message: '$e'));
+    }
+  }
+
   void deleteEmployee({required String id}) async {
     emit(DatabaseDeletingEmployee());
     try {
@@ -298,14 +312,21 @@ class DatabaseCubit extends Cubit<DatabaseState> {
         ]));
   }
 
-  void createStatistics(List<Map> filteredEmployees) async {
+  void createStatistics(List<Map<String, dynamic>> filteredEmployees) async {
+    for (int i = 0; i < filteredEmployees.length; i++) {
+      filteredEmployees[i].addAll({"م": i + 1});
+    }
+    print(filteredEmployees);
     pdfTemplate(
         PdfPageFormat.a4.landscape,
         pw.Column(crossAxisAlignment: pw.CrossAxisAlignment.start, children: [
           pw.Text('بيان احصائي', style: pw.TextStyle(fontSize: 18)),
           pw.TableHelper.fromTextArray(
-            headers: filteredEmployees[0].keys.toList(),
-            data: filteredEmployees.map((map) => map.values.toList()).toList(),
+            cellAlignment: pw.Alignment.center,
+            headers: filteredEmployees[0].keys.toList().reversed.toList(),
+            data: filteredEmployees
+                .map((map) => map.values.toList().reversed.toList())
+                .toList(),
           )
         ]));
   }

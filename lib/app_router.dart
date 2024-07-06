@@ -6,7 +6,6 @@ import 'package:hr_management_app/business_logic/cubit/database_cubit.dart';
 import 'package:hr_management_app/business_logic/cubit/user_archive_cubit.dart';
 import 'package:hr_management_app/data/web_services/archive_web_services.dart';
 import 'package:hr_management_app/data/web_services/database_web_services.dart';
-import 'package:hr_management_app/presentation/screens/UploadImage.dart';
 import 'package:hr_management_app/presentation/screens/admin/admin_home.dart';
 import 'package:hr_management_app/presentation/screens/admin/archive/addUserArchive.dart';
 import 'package:hr_management_app/presentation/screens/admin/archive/addToUserArchive.dart';
@@ -16,6 +15,7 @@ import 'package:hr_management_app/presentation/screens/admin/archive/userArchive
 import 'package:hr_management_app/presentation/screens/admin/database/addEmployee.dart';
 import 'package:hr_management_app/presentation/screens/admin/database/database_home.dart';
 import 'package:hr_management_app/presentation/screens/admin/database/statistics.dart';
+import 'package:hr_management_app/presentation/screens/admin/database/updateEmployee.dart';
 import 'package:hr_management_app/presentation/screens/admin/transactions/Penalties.dart';
 import 'package:hr_management_app/presentation/screens/admin/transactions/Promotions.dart';
 import 'package:hr_management_app/presentation/screens/admin/transactions/bonuses.dart';
@@ -76,8 +76,19 @@ class AppRouter {
                 create: (context) =>
                     DatabaseCubit(databaseWebServices: databaseWebServices),
                 child: AddEmployee()));
+      case '/database_update_employee':
+        return MaterialPageRoute(
+            builder: (_) => BlocProvider<DatabaseCubit>(
+                create: (context) =>
+                    DatabaseCubit(databaseWebServices: databaseWebServices),
+                child: UpdateEmployee()));
       case '/database_statistics':
-        return MaterialPageRoute(builder: (context) => Statistics());
+        final data = settings.arguments as List;
+        return MaterialPageRoute(
+            builder: (_) => BlocProvider<DatabaseCubit>(
+                create: (context) =>
+                    DatabaseCubit(databaseWebServices: databaseWebServices),
+                child: Statistics(data: data)));
       case 'transactions':
         return MaterialPageRoute(builder: (context) => Transactions());
       case 'Penalties':
@@ -88,8 +99,6 @@ class AppRouter {
         return MaterialPageRoute(builder: (context) => Vacations());
       case 'Promotions':
         return MaterialPageRoute(builder: (context) => Promotions());
-      case '/upload_image':
-        return MaterialPageRoute(builder: (context) => Uploadimage());
       default:
     }
   }

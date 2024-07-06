@@ -57,10 +57,13 @@ class DatabaseWebServices {
   }
 
   Future<String> updateEmployee(
-      {required String id, required Map<String, dynamic> employeeData}) async {
+      {required Map<String, dynamic> employeeData}) async {
     try {
+      var id = employeeData['employeeid'];
+      employeeData.remove('employeeid');
       final data = json.encode(employeeData);
-      Response response = await dio.put('employees/$id');
+      Response response =
+          await dio.put('http://16.171.199.210:3000/employees/$id', data: data);
       if (response.statusCode == 200) {
         return "employee's data updated successfuly";
       } else {

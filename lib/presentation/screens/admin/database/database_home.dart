@@ -11,7 +11,7 @@ import 'package:hr_management_app/presentation/components/theme.dart';
 import 'package:path_provider/path_provider.dart';
 
 class DatabaseHome extends StatefulWidget {
-  const DatabaseHome({super.key});
+  DatabaseHome({super.key});
 
   @override
   State<DatabaseHome> createState() => _DatabaseHomeState();
@@ -80,78 +80,6 @@ class _DatabaseHomeState extends State<DatabaseHome> {
     );
   }
 
-  // === make statistics === //
-  String selectedItem = 'تاريخ التعيين';
-  void makeStatistics(List data) {
-    List wantedItems = [];
-    List<DropdownMenuItem<String>> items = [
-      DropdownMenuItem(value: 'تاريخ التعيين', child: Text('تاريخ التعيين')),
-      DropdownMenuItem(value: 'تاريخ التعاقد', child: Text('تاريخ التعاقد')),
-      DropdownMenuItem(
-          value: 'المجموعة الوظيفية', child: Text('المجموعة الوظيفية')),
-      DropdownMenuItem(value: 'المسمى الوظيفي', child: Text('المسمى الوظيفي')),
-      DropdownMenuItem(value: 'المؤهل', child: Text('المؤهل')),
-      DropdownMenuItem(value: 'العنوان', child: Text('العنوان')),
-      DropdownMenuItem(
-          value: 'تاريخ اخر ترقية', child: Text('تاريخ اخر ترقية')),
-    ];
-    showDialog(
-      context: context,
-      builder: (BuildContext context1) {
-        return AlertDialog(
-          title: Text('عمل احصائية'),
-          content: SizedBox(
-            height: 150,
-            width: 300,
-            child: Column(
-              children: [
-                DropdownButton(
-                    isExpanded: true,
-                    value: selectedItem,
-                    items: items,
-                    onChanged: (value) {
-                      setState(() {
-                        selectedItem = value!;
-                      });
-                    }),
-                SizedBox(height: 16),
-                customTextField(
-                    controller: statisticsController, label: 'القيمة'),
-                SizedBox(height: 16),
-              ],
-            ),
-          ),
-          actions: [
-            TextButton(
-              onPressed: () {
-                if (statisticsController.text != '') {
-                  var employeesData = data.where((item) {
-                    return item[arabicToEnglishDataNames[selectedItem]]
-                        .toString()
-                        .contains(statisticsController.text);
-                  }).toList();
-                  List<Map<String, dynamic>> filteredEmployees =
-                      employeesData.map((employee) {
-                    return {
-                      'الإسم': employee['name'],
-                      '$selectedItem':
-                          employee[arabicToEnglishDataNames[selectedItem]]
-                    };
-                  }).toList();
-                  context
-                      .read<DatabaseCubit>()
-                      .createStatistics(filteredEmployees);
-                  Navigator.pop(context);
-                } else {}
-              },
-              child: Text('عمل احصائية'),
-            ),
-          ],
-        );
-      },
-    );
-  }
-
   @override
   void initState() {
     super.initState();
@@ -208,7 +136,11 @@ class _DatabaseHomeState extends State<DatabaseHome> {
                           SizedBox(width: 16),
                           // update an employee
                           customButton(
-                              label: 'تعديل موظف', onPressed: () async {}),
+                              label: 'تعديل موظف',
+                              onPressed: () {
+                                Navigator.pushNamed(
+                                    context, '/database_update_employee');
+                              }),
                           SizedBox(width: 16),
 
                           // delete an employee
@@ -255,9 +187,10 @@ class _DatabaseHomeState extends State<DatabaseHome> {
                           customButton(
                               label: 'إحصائية',
                               onPressed: () {
-                                makeStatistics(state.data);
-                                // Navigator.pushNamed(
-                                //     context, '/database_statistics');
+                                // makeStatistics(state.data);
+                                Navigator.pushNamed(
+                                    context, '/database_statistics',
+                                    arguments: state.data);
                               })
                         ],
                       ),
