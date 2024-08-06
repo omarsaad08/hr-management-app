@@ -37,6 +37,7 @@ class _UpdateEmployeeState extends State<UpdateEmployee> {
     'نوع العقد': 'typeofcontract',
     'اخر تقرير': 'report',
     'الحالة من العمل': 'employmentstatus',
+    'الحالة الاجتماعية': 'maritalstatus',
     'تاريخ استلام العمل': 'dateofappointment',
     'تاريخ التعيين / التعاقد': 'contractdate',
     'تاريخ الميلاد': 'date_of_birth',
@@ -44,6 +45,7 @@ class _UpdateEmployeeState extends State<UpdateEmployee> {
   };
   Map<String, dynamic> optionsCategories = {
     'functionalgroup': [
+      'لا يوجد',
       'استشاري',
       'تخصصية',
       'فنية',
@@ -52,6 +54,7 @@ class _UpdateEmployeeState extends State<UpdateEmployee> {
       'خدمات معاونة'
     ],
     'degree': [
+      'لا يوجد',
       'عليا',
       'مدير عام',
       'الأولى-أ',
@@ -74,8 +77,9 @@ class _UpdateEmployeeState extends State<UpdateEmployee> {
     ],
     'gender': ['ذكر', 'أنثى'],
     'religion': ['مسلم', 'مسيحي'],
-    'military_service_status': ['معفى', 'أدى الخدمة'],
+    'military_service_status': ['لا يوجد', 'معفى', 'أدى الخدمة'],
     'jobcategory': {
+      'لا يوجد': ['لا يوجد'],
       'استشاري': ['مدير عام'],
       'تخصصية': [
         'اقتصاد وتجارة',
@@ -103,14 +107,15 @@ class _UpdateEmployeeState extends State<UpdateEmployee> {
       'خدمات معاونة': ['خدمات معاونة']
     },
     'administration': [
+      'لا يوجد',
       'إيرادات الرسوم والتحصيل',
       'الخزينة',
       'مركز تكنولوجي لخدمة المواطنين',
       'مركز المعلومات والتحول الرقمي',
       'المتابعة الميدانية',
       'الشئون الإدارية',
-      'شئون المقر'
-          'الأمن',
+      'شئون المقر',
+      'الأمن',
       'التقييم والمتابعة',
       'الإدارة الهندسية',
       'الشئون القانونية',
@@ -120,19 +125,36 @@ class _UpdateEmployeeState extends State<UpdateEmployee> {
       'المخازن',
       'العقود والمشتريات',
       'الميزانية',
-      'التخطيط والمتابعة'
+      'التخطيط والمتابعة',
+      'رئيس الحي',
+      'سكرتير عام الحي',
+      'مساعد رئيس حي',
+      'الشئون المالية والادارية',
+      'العلاقات العامة والإعلام',
+      'سكرتارية مكتب رئيس الحي',
+      'سكرتارية مكتب سكرتير الحي',
     ],
+    // 'qualification': [
+
+    // ],
     'typeofcontract': [
-      'مخابز',
-      'محاجر',
-      'شاليهات',
-      'دواجن وإنتاج حيواني',
-      'الأسواق',
-      'تجميل ونضافة',
-      'عقود مقننة',
-      'عقود غير مقننة',
+      'لا يوجد',
+      'دائم',
+      'عقد استعانة',
+      'عقد مياومة',
+      'مشروع مخابز',
+      'مشروع محاجر',
+      'مشروع شاليهات',
+      'مشروع دواجن وإنتاج حيواني',
+      'مشروع الأسواق',
+      'مشروع تجميل ونضافة',
+      'مشروع عقود مقننة',
+      'مشروع عقود غير مقننة',
+      'مشروع صندوق الخدمات',
+      'اخرى'
     ],
     'report': [
+      'لا يوجد',
       'امتياز',
       'كفء',
       'فوق متوسط',
@@ -140,6 +162,7 @@ class _UpdateEmployeeState extends State<UpdateEmployee> {
       'ضعيف',
     ],
     'employmentstatus': [
+      'لا يوجد',
       'على رأس العمل',
       'منتدب',
       'معار',
@@ -148,6 +171,8 @@ class _UpdateEmployeeState extends State<UpdateEmployee> {
       'إيقاف عن العمل',
       'إجازة إستثنائية',
     ],
+    'maritalstatus': ['اعزب/عزباء', 'متزوج/ة', 'ارمل/ة', 'مطلق/ة'],
+    'role': ["أخرى", "موارد بشرية"]
   };
   Map<String, String?> selectedDropdownValues = {};
   bool employeeAdded = false;

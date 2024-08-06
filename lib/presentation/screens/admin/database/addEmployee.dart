@@ -37,6 +37,9 @@ class _AddEmployeeState extends State<AddEmployee> {
     'نوع العقد': 'typeofcontract',
     'اخر تقرير': 'report',
     'الحالة من العمل': 'employmentstatus',
+    'الحالة الاجتماعية': 'maritalstatus',
+    'رصيد الاجازات': 'vacationBalance',
+    'المستوى': 'role',
     'تاريخ استلام العمل': 'dateofappointment',
     'تاريخ التعيين / التعاقد': 'contractdate',
     'تاريخ الميلاد': 'date_of_birth',
@@ -44,6 +47,7 @@ class _AddEmployeeState extends State<AddEmployee> {
   };
   Map<String, dynamic> optionsCategories = {
     'functionalgroup': [
+      'لا يوجد',
       'استشاري',
       'تخصصية',
       'فنية',
@@ -52,6 +56,7 @@ class _AddEmployeeState extends State<AddEmployee> {
       'خدمات معاونة'
     ],
     'degree': [
+      'لا يوجد',
       'عليا',
       'مدير عام',
       'الأولى-أ',
@@ -74,8 +79,9 @@ class _AddEmployeeState extends State<AddEmployee> {
     ],
     'gender': ['ذكر', 'أنثى'],
     'religion': ['مسلم', 'مسيحي'],
-    'military_service_status': ['معفى', 'أدى الخدمة'],
+    'military_service_status': ['لا يوجد', 'معفى', 'أدى الخدمة'],
     'jobcategory': {
+      'لا يوجد': ['لا يوجد'],
       'استشاري': ['مدير عام'],
       'تخصصية': [
         'اقتصاد وتجارة',
@@ -103,14 +109,15 @@ class _AddEmployeeState extends State<AddEmployee> {
       'خدمات معاونة': ['خدمات معاونة']
     },
     'administration': [
+      'لا يوجد',
       'إيرادات الرسوم والتحصيل',
       'الخزينة',
       'مركز تكنولوجي لخدمة المواطنين',
       'مركز المعلومات والتحول الرقمي',
       'المتابعة الميدانية',
       'الشئون الإدارية',
-      'شئون المقر'
-          'الأمن',
+      'شئون المقر',
+      'الأمن',
       'التقييم والمتابعة',
       'الإدارة الهندسية',
       'الشئون القانونية',
@@ -120,22 +127,36 @@ class _AddEmployeeState extends State<AddEmployee> {
       'المخازن',
       'العقود والمشتريات',
       'الميزانية',
-      'التخطيط والمتابعة'
+      'التخطيط والمتابعة',
+      'رئيس الحي',
+      'سكرتير عام الحي',
+      'مساعد رئيس حي',
+      'الشئون المالية والادارية',
+      'العلاقات العامة والإعلام',
+      'سكرتارية مكتب رئيس الحي',
+      'سكرتارية مكتب سكرتير الحي',
     ],
     // 'qualification': [
 
     // ],
     'typeofcontract': [
-      'مخابز',
-      'محاجر',
-      'شاليهات',
-      'دواجن وإنتاج حيواني',
-      'الأسواق',
-      'تجميل ونضافة',
-      'عقود مقننة',
-      'عقود غير مقننة',
+      'لا يوجد',
+      'دائم',
+      'عقد استعانة',
+      'عقد مياومة',
+      'مشروع مخابز',
+      'مشروع محاجر',
+      'مشروع شاليهات',
+      'مشروع دواجن وإنتاج حيواني',
+      'مشروع الأسواق',
+      'مشروع تجميل ونضافة',
+      'مشروع عقود مقننة',
+      'مشروع عقود غير مقننة',
+      'مشروع صندوق الخدمات',
+      'اخرى'
     ],
     'report': [
+      'لا يوجد',
       'امتياز',
       'كفء',
       'فوق متوسط',
@@ -143,6 +164,7 @@ class _AddEmployeeState extends State<AddEmployee> {
       'ضعيف',
     ],
     'employmentstatus': [
+      'لا يوجد',
       'على رأس العمل',
       'منتدب',
       'معار',
@@ -151,6 +173,8 @@ class _AddEmployeeState extends State<AddEmployee> {
       'إيقاف عن العمل',
       'إجازة إستثنائية',
     ],
+    'maritalstatus': ['اعزب/عزباء', 'متزوج/ة', 'ارمل/ة', 'مطلق/ة'],
+    'role': ["موظف", "مدير"]
   };
   Map<String, String?> selectedDropdownValues = {};
   bool employeeAdded = false;
@@ -194,145 +218,161 @@ class _AddEmployeeState extends State<AddEmployee> {
 
   @override
   Widget build(BuildContext context) {
-    context.read<DatabaseCubit>().addEmployeeInitial();
+    // context.read<DatabaseCubit>().addEmployeeInitial();
     return Scaffold(
         backgroundColor: clr(3),
         appBar: customAppBar('إضافة موظف', context, true),
         body: BlocBuilder<DatabaseCubit, DatabaseState>(
           builder: (context, state) {
-            if (state is DatabaseAddingEmployee) {
-              return Center(
-                child: CircularProgressIndicator(),
-              );
-            } else {
-              return customContainer(
-                  width: 1000,
-                  height: double.infinity,
-                  child: Column(children: [
-                    Center(
-                      child: Text('بيانات الموظف',
-                          style: TextStyle(
-                              fontSize: 36, fontWeight: FontWeight.w500)),
-                    ),
-                    Expanded(
-                      child: ListView.builder(
-                        itemCount: arabicToEnglishDataNames.length,
-                        itemBuilder: (context, index) {
-                          final dataName = arabicToEnglishDataNames.values
-                              .toList()[index]
-                              .toString();
-                          String selectedgroup =
-                              optionsCategories['functionalgroup'][0];
-                          if (dataName.contains('date')) {
-                            return Container(
-                              margin: EdgeInsets.only(bottom: 12),
-                              child: customButton(
-                                  label: arabicToEnglishDataNames.keys
-                                      .toList()[index]
-                                      .toString(),
-                                  onPressed: () async {
-                                    controllers[dataName] =
-                                        await selectDate(context);
-                                  }),
-                            );
-                          } else if (optionsCategories.keys
-                              .toList()
-                              .contains(dataName)) {
-                            List<DropdownMenuItem<String>> items = [];
-                            String? selectedItem;
-                            if (dataName == 'jobcategory') {
-                              for (var element in optionsCategories[dataName]
-                                  [selectedDropdownValues['functionalgroup']]) {
-                                selectedItem = optionsCategories[dataName][
-                                    selectedDropdownValues[
-                                        'functionalgroup']][0];
-                                items.add(DropdownMenuItem(
-                                    value: element, child: Text(element)));
-                              }
-                            } else {
-                              for (var element in optionsCategories[dataName]) {
-                                selectedItem = optionsCategories[dataName][0];
-                                items.add(DropdownMenuItem(
-                                    value: element, child: Text(element)));
-                              }
+            return customContainer(
+                width: 1000,
+                height: double.infinity,
+                child: Column(children: [
+                  Center(
+                    child: Text('بيانات الموظف',
+                        style: TextStyle(
+                            fontSize: 36, fontWeight: FontWeight.w500)),
+                  ),
+                  SizedBox(
+                    height: 4,
+                  ),
+                  state is DatabaseAddingEmployee
+                      ? CircularProgressIndicator(
+                          strokeWidth: 2,
+                        )
+                      : state is DatabaseAddedEmployee
+                          ? Icon(Icons.check_box)
+                          : Container(),
+                  SizedBox(
+                    height: 16,
+                  ),
+                  Expanded(
+                    child: ListView.builder(
+                      itemCount: arabicToEnglishDataNames.length,
+                      itemBuilder: (context, index) {
+                        final dataName = arabicToEnglishDataNames.values
+                            .toList()[index]
+                            .toString();
+                        String selectedgroup =
+                            optionsCategories['functionalgroup'][0];
+                        if (dataName.contains('date')) {
+                          return Container(
+                            margin: EdgeInsets.only(bottom: 12),
+                            child: customButton(
+                                label: arabicToEnglishDataNames.keys
+                                    .toList()[index]
+                                    .toString(),
+                                onPressed: () async {
+                                  controllers[dataName] =
+                                      await selectDate(context);
+                                }),
+                          );
+                        } else if (optionsCategories.keys
+                            .toList()
+                            .contains(dataName)) {
+                          List<DropdownMenuItem<String>> items = [];
+                          String? selectedItem;
+                          if (dataName == 'jobcategory') {
+                            for (var element in optionsCategories[dataName]
+                                [selectedDropdownValues['functionalgroup']]) {
+                              selectedItem = optionsCategories[dataName][
+                                  selectedDropdownValues['functionalgroup']][0];
+                              items.add(DropdownMenuItem(
+                                  value: element, child: Text(element)));
                             }
-                            return Row(
-                              children: [
-                                Text(arabicToEnglishDataNames.keys
-                                    .toList()[index]),
-                                SizedBox(
-                                  width: 16,
-                                ),
-                                Expanded(
-                                  child: DropdownButton(
-                                      isExpanded: true,
-                                      value: selectedDropdownValues[dataName],
-                                      items: items,
-                                      onChanged: (value) {
-                                        setState(() {
-                                          selectedDropdownValues[dataName] =
-                                              value;
-                                          if (dataName == 'functionalgroup') {
-                                            selectedDropdownValues[
-                                                    'jobcategory'] =
-                                                optionsCategories['jobcategory']
-                                                    [selectedDropdownValues[
-                                                        'functionalgroup']][0];
-                                          }
-                                          controllers = controllers;
-                                        });
-                                      }),
-                                ),
-                              ],
-                            );
                           } else {
-                            return Container(
-                              margin: EdgeInsets.only(bottom: 12),
-                              child: customTextField(
-                                  controller: controllers[dataName]!,
-                                  label: arabicToEnglishDataNames.keys
-                                      .toList()[index]
-                                      .toString()),
-                            );
-                          }
-                        },
-                      ),
-                    ),
-                    SizedBox(
-                      height: 16,
-                    ),
-                    customButton(
-                        label: 'إضافة',
-                        onPressed: () {
-                          Map<String, dynamic> employeeData = {};
-                          // parsing data
-                          for (var element
-                              in arabicToEnglishDataNames.values.toList()) {
-                            if (optionsCategories.keys
-                                .toList()
-                                .contains(element)) {
-                              employeeData['$element'] =
-                                  selectedDropdownValues[element];
-                            } else if (!element.toString().contains('date')) {
-                              employeeData['$element'] =
-                                  controllers['$element']?.text;
-                            } else {
-                              employeeData['$element'] = controllers['$element']
-                                  .toString()
-                                  .split(' ')[0];
-                              if (employeeData[element] == 'null') {
-                                employeeData[element] =
-                                    DateTime.now().toString();
-                              }
+                            for (var element in optionsCategories[dataName]) {
+                              selectedItem = optionsCategories[dataName][0];
+                              items.add(DropdownMenuItem(
+                                  value: element, child: Text(element)));
                             }
                           }
-                          print(employeeData);
-                          context
-                              .read<DatabaseCubit>()
-                              .addEmployee(employeeData: employeeData);
-                        }),
-                  ]));
-            }
+                          return Row(
+                            children: [
+                              Text(arabicToEnglishDataNames.keys
+                                  .toList()[index]),
+                              SizedBox(
+                                width: 16,
+                              ),
+                              Expanded(
+                                child: DropdownButton(
+                                    isExpanded: true,
+                                    value: selectedDropdownValues[dataName],
+                                    items: items,
+                                    onChanged: (value) {
+                                      setState(() {
+                                        selectedDropdownValues[dataName] =
+                                            value;
+                                        if (dataName == 'functionalgroup') {
+                                          selectedDropdownValues[
+                                                  'jobcategory'] =
+                                              optionsCategories['jobcategory'][
+                                                  selectedDropdownValues[
+                                                      'functionalgroup']][0];
+                                        }
+                                        controllers = controllers;
+                                      });
+                                    }),
+                              ),
+                            ],
+                          );
+                        } else {
+                          return Container(
+                            margin: EdgeInsets.only(bottom: 12),
+                            child: customTextField(
+                                controller: controllers[dataName]!,
+                                label: arabicToEnglishDataNames.keys
+                                    .toList()[index]
+                                    .toString()),
+                          );
+                        }
+                      },
+                    ),
+                  ),
+                  SizedBox(
+                    height: 16,
+                  ),
+                  customButton(
+                      label: 'إضافة',
+                      onPressed: () {
+                        Map<String, dynamic> employeeData = {};
+                        // parsing data
+                        for (var element
+                            in arabicToEnglishDataNames.values.toList()) {
+                          if (optionsCategories.keys
+                              .toList()
+                              .contains(element)) {
+                            employeeData['$element'] =
+                                selectedDropdownValues[element];
+                          } else if (!element.toString().contains('date')) {
+                            employeeData['$element'] =
+                                controllers['$element']?.text;
+                          } else {
+                            employeeData['$element'] = controllers['$element']
+                                .toString()
+                                .split(' ')[0];
+                            if (employeeData[element] == 'null') {
+                              employeeData[element] = DateTime.now().toString();
+                            }
+                          }
+                        }
+                        // change the role to contain the administration
+                        if (employeeData['administration'] ==
+                            'الموارد البشرية') {
+                          employeeData['role'] = employeeData['administration'];
+                        } else if (!employeeData['administration']
+                            .toString()
+                            .contains("الحي")) {
+                          employeeData['role'] = employeeData['role'] +
+                              employeeData['administration'];
+                        }
+
+                        print(employeeData);
+                        context
+                            .read<DatabaseCubit>()
+                            .addEmployee(employeeData: employeeData);
+                      }),
+                ]));
           },
         ));
   }

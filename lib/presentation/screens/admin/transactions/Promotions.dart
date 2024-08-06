@@ -17,11 +17,10 @@ class _PromotionsState extends State<Promotions> {
     return Scaffold(
       appBar: customAppBar('الترقيات', context, true),
       body: custom_sub_trans(
-        // sub_title1: 'نوع الترقية',
-        sub_title2: 'الجهات المعلمة',
-        type: 'promotions',
-        // trans_options: ['']
-      ),
+          // sub_title1: 'نوع الترقية',
+          sub_title2: 'الجهات المعلمة',
+          type: 'promotions',
+          trans_options: ['']),
     );
   }
 }

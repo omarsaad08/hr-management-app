@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hr_management_app/presentation/components/MyDrawer.dart';
 import 'package:hr_management_app/presentation/components/customAppBar.dart';
 import 'package:hr_management_app/presentation/components/customButton.dart';
 import 'package:hr_management_app/presentation/components/customContainer.dart';
@@ -12,6 +13,7 @@ class AdminHome extends StatelessWidget {
     return Scaffold(
         backgroundColor: clr(3),
         appBar: customAppBar('الصفحة الرئيسية', context, false),
+        drawer: MyDrawer(context),
         body: customContainer(
             width: 875,
             height: 600,

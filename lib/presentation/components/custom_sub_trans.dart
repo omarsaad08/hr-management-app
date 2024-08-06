@@ -308,9 +308,6 @@ class _custom_sub_transState extends State<custom_sub_trans> {
                             ? checkBoxes(widget.trans_options!,
                                 radio: widget.type != 'statistics')
                             : Container(),
-                        // check_Row(0),
-                        // check_Row(2),
-                        // check_Row(4),
                         widget.sub_title2 != null
                             ? Row(
                                 children: [
@@ -338,42 +335,6 @@ class _custom_sub_transState extends State<custom_sub_trans> {
                                 widget.notification_options,
                               )
                             : Container(),
-                        // CheckboxListTile(
-                        //   value: ischeckedlist[6],
-                        //   onChanged: (newbool) {
-                        //     setState(() {
-                        //       ischeckedlist[6] = newbool!;
-                        //     });
-                        //   },
-                        //   activeColor: clr(2),
-                        //   checkColor: clr(4),
-                        //   title: Text("..."),
-                        //   controlAffinity: ListTileControlAffinity.leading,
-                        // ),
-                        // CheckboxListTile(
-                        //   value: ischeckedlist[7],
-                        //   onChanged: (newbool) {
-                        //     setState(() {
-                        //       ischeckedlist[7] = newbool!;
-                        //     });
-                        //   },
-                        //   activeColor: clr(2),
-                        //   checkColor: clr(4),
-                        //   title: Text("..."),
-                        //   controlAffinity: ListTileControlAffinity.leading,
-                        // ),
-                        // CheckboxListTile(
-                        //   value: ischeckedlist[8],
-                        //   onChanged: (newbool) {
-                        //     setState(() {
-                        //       ischeckedlist[8] = newbool!;
-                        //     });
-                        //   },
-                        //   activeColor: clr(2),
-                        //   checkColor: clr(4),
-                        //   title: Text("..."),
-                        //   controlAffinity: ListTileControlAffinity.leading,
-                        // ),
                         SizedBox(
                           height: 20,
                         ),
@@ -406,42 +367,4 @@ class _custom_sub_transState extends State<custom_sub_trans> {
       ),
     );
   }
-
-  // Widget check_Row(int initial_index) {
-  //   return Row(
-  //     mainAxisAlignment: MainAxisAlignment.start,
-  //     children: [
-  //       Container(
-  //         width: 200,
-  //         child: CheckboxListTile(
-  //           value: ischeckedlist[initial_index],
-  //           onChanged: (newbool) {
-  //             setState(() {
-  //               ischeckedlist[initial_index] = newbool!;
-  //             });
-  //           },
-  //           activeColor: clr(2),
-  //           checkColor: clr(4),
-  //           title: Text("..."),
-  //           controlAffinity: ListTileControlAffinity.leading,
-  //         ),
-  //       ),
-  //       Container(
-  //         width: 200,
-  //         child: CheckboxListTile(
-  //           value: ischeckedlist[initial_index + 1],
-  //           onChanged: (newbool) {
-  //             setState(() {
-  //               ischeckedlist[initial_index + 1] = newbool!;
-  //             });
-  //           },
-  //           activeColor: clr(2),
-  //           checkColor: clr(4),
-  //           title: Text("..."),
-  //           controlAffinity: ListTileControlAffinity.leading,
-  //         ),
-  //       ),
-  //     ],
-  //   );
-  // }
 }

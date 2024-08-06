@@ -80,12 +80,12 @@ class _ArchiveSearchState extends State<ArchiveSearch> {
                                       arguments: idController.text);
                                 }),
                             SizedBox(height: 20),
-                            customButton(
-                                label: 'إضافة موظف للأرشيف',
-                                onPressed: () {
-                                  Navigator.pushNamed(
-                                      context, '/add_user_archive');
-                                })
+                            // customButton(
+                            //     label: 'إضافة موظف للأرشيف',
+                            //     onPressed: () {
+                            //       Navigator.pushNamed(
+                            //           context, '/add_user_archive');
+                            //     })
                           ],
                         ));
                   }

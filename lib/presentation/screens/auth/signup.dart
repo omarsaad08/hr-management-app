@@ -1,63 +1,123 @@
+// import 'package:cura/components/Appbar.dart';
+import 'package:hr_management_app/presentation/components/MyDrawer.dart';
+import 'package:hr_management_app/presentation/components/TextFrom.dart';
+import 'package:hr_management_app/presentation/components/Buttom.dart';
 import 'package:flutter/material.dart';
-import 'package:hr_management_app/data/web_services/auth_web_services.dart';
+import 'package:hr_management_app/presentation/components/customAppBar.dart';
+import 'package:hr_management_app/presentation/components/theme.dart';
 
 class Signup extends StatefulWidget {
-  const Signup({super.key});
-
   @override
   State<Signup> createState() => _SignupState();
 }
 
 class _SignupState extends State<Signup> {
-  final _formKey = GlobalKey<FormState>();
-  final _idController = TextEditingController();
-  final _passwordController = TextEditingController();
-  final _roleController = TextEditingController();
+  var formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      backgroundColor: clr(3),
+      appBar: customAppBar("نظام إدارة الموارد البشرية", context, false),
+      drawer: MyDrawer(context),
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Form(
-              key: _formKey,
+        child: Container(
+          height: 360.0,
+          width: 450,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(35.0),
+            color: clr(4),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.1),
+                spreadRadius: 4,
+                blurRadius: 4,
+                offset: Offset(3, 3),
+              ),
+            ],
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Form(
+              key: formKey,
               child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  TextFormField(
-                    controller: _idController,
-                    decoration: InputDecoration(labelText: "كود الموظف"),
+                  Text(
+                    "إنشاء حساب",
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 25.0,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
-                  SizedBox(
-                    height: 20,
+                  SizedBox(height: 30.0),
+                  Directionality(
+                    textDirection: TextDirection.rtl,
+                    child: Container(
+                      width: 350.0,
+                      child: TextFrom(
+                        validate: (value) {
+                          if (value == null || value.isEmpty) {
+                            return "من فضلك أدخل كود المستخدم";
+                          }
+                          return null;
+                        },
+                        label: "كود المستخدم",
+                        radius: 15.0,
+                      ),
+                    ),
                   ),
-                  TextFormField(
-                    controller: _passwordController,
-                    decoration: InputDecoration(labelText: 'كلمة المرور'),
-                    obscureText: true,
+                  SizedBox(height: 20.0),
+                  Directionality(
+                    textDirection: TextDirection.rtl,
+                    child: Container(
+                      width: 350.0,
+                      child: TextFrom(
+                        obscure: true,
+                        validate: (value) {
+                          if (value == null || value.isEmpty) {
+                            return "من فضلك أدخل كلمة السر";
+                          }
+                          return null;
+                        },
+                        label: "كلمة السر",
+                        radius: 15.0,
+                      ),
+                    ),
                   ),
-                  SizedBox(
-                    height: 20,
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      GestureDetector(
+                        onTap: () {}, //Add later
+                        child: Text(
+                          "نسيت كلمة السر؟",
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 15.0,
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 45.0,
+                        width: 60.0,
+                      ),
+                    ],
                   ),
-                  TextFormField(
-                    controller: _roleController,
-                    decoration: InputDecoration(labelText: 'المستوى'),
-                    obscureText: true,
-                  ),
-                  SizedBox(height: 40),
-                  ElevatedButton(
-                    child: Text('إنشاء حساب'),
-                    onPressed: () {
-                      signup(context, _idController, _passwordController,
-                          _roleController, _formKey);
+                  SizedBox(height: 15.0),
+                  Buttom(
+                    width: 180.0,
+                    text: "متابعة",
+                    function: () {
+                      if (formKey.currentState?.validate() ?? false) {}
                     },
                   ),
                 ],
               ),
-            )
-          ],
+            ),
+          ),
         ),
       ),
     );

@@ -26,7 +26,7 @@ class DatabaseWebServices {
     }
   }
 
-  Future<List> getEmployee({required String id}) async {
+  Future<Map> getEmployee({required String id}) async {
     try {
       Response response =
           await dio.get('http://16.171.199.210:3000/employees/Details/$id');
@@ -36,7 +36,8 @@ class DatabaseWebServices {
         throw Exception('failed to find that employee');
       }
     } catch (e) {
-      return [];
+      print(e);
+      return {};
     }
   }
 
@@ -47,10 +48,21 @@ class DatabaseWebServices {
       Response response =
           await dio.post('http://16.171.199.210:3000/employees', data: data);
       if (response.statusCode == 200) {
-        return "employee added successfuly";
+        return response.data;
       } else {
         throw Exception('failed to add employee');
       }
+    } catch (e) {
+      return "error: $e";
+    }
+  }
+
+  Future<dynamic> signupEmployee(String id, String nationalidnumber) async {
+    final data = {"userId": id, "password": nationalidnumber};
+    try {
+      Response response = await dio.post('http://localhost:3000/auth/signup',
+          data: json.encode(data));
+      return response.data;
     } catch (e) {
       return "error: $e";
     }

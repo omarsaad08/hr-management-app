@@ -22,42 +22,49 @@ class _DatabaseHomeState extends State<DatabaseHome> {
     'ID': 'employeeid',
     'الاسم': 'name',
     'الرقم القومي': 'nationalidnumber',
+    'الادارة': 'administration',
+    'المسمى الوظيفي': 'jobtitle',
+    'الدرجة الوظيفية': 'degree',
+    'المجموعة الوظيفية': 'functionalgroup',
+    'المؤهل': 'qualification',
     'تاريخ استلام العمل': 'dateofappointment',
     'العنوان': 'address',
     'الرقم التأميني': 'insurancenumber',
     'تاريخ التعيين / التعاقد': 'contractdate',
-    'المجموعة الوظيفية': 'functionalgroup',
-    'المسمى الوظيفي': 'jobtitle',
-    'الدرجة الوظيفية': 'degree',
     'تاريخ اخر ترقية': 'dateoflastpromotion',
-    'النوع': 'gender',
     'الديانة': 'religion',
     'تاريخ الميلاد': 'date_of_birth',
+    'النوع': 'gender',
     'رقم الهاتف': 'phone_number',
     'الحالة من التجنيد': 'military_service_status',
     'المجموعة النوعية': 'jobcategory',
-    'الادارة': 'administration',
     'الوظيفة الحالية': 'currentjob',
-    'المؤهل': 'qualification',
     'نوع العقد': 'typeofcontract',
     'اخر تقرير': 'report',
-    'الحالة من العمل': 'employmentstatus'
+    'الحالة من العمل': 'employmentstatus',
   };
   TextEditingController deleteController = TextEditingController();
   TextEditingController searchController = TextEditingController();
   TextEditingController employeeStatusFileIdController =
       TextEditingController();
   TextEditingController statisticsController = TextEditingController();
+  TextEditingController employeeStatusFileDataController =
+      TextEditingController();
   // === build employee status file ===
-  void buildEmployeeStatusFile(List data) {
+  void buildEmployeeStatusFile(String type, List data) {
     showDialog(
       context: context,
       builder: (BuildContext context1) {
         return AlertDialog(
-          title: Text('بيان حالة وظيفية'),
+          title: Text(type),
           content: customTextField(
               controller: employeeStatusFileIdController, label: 'كود الموظف'),
           actions: [
+            type == 'افادة'
+                ? customTextField(
+                    controller: employeeStatusFileDataController,
+                    label: 'الجهة')
+                : Container(),
             TextButton(
               onPressed: () {
                 if (employeeStatusFileIdController.text != '') {
@@ -66,9 +73,17 @@ class _DatabaseHomeState extends State<DatabaseHome> {
                         .toString()
                         .contains(employeeStatusFileIdController.text);
                   }).toList()[0];
-                  context
-                      .read<DatabaseCubit>()
-                      .createEmployeeStatusFile(employeeData as Map);
+                  if (type == 'بيان حالة وظيفية') {
+                    context
+                        .read<DatabaseCubit>()
+                        .createEmployeeStatusFile(employeeData as Map);
+                  } else if (type == 'افادة') {
+                    employeeData['receiver'] =
+                        employeeStatusFileDataController.text;
+                    context
+                        .read<DatabaseCubit>()
+                        .createStatement(employeeData as Map);
+                  }
                   Navigator.pop(context);
                 }
               },
@@ -93,13 +108,35 @@ class _DatabaseHomeState extends State<DatabaseHome> {
     List<DataColumn> columns = [];
     arabicToEnglishDataNames.keys.forEach(
       (element) {
-        columns.add(DataColumn(label: Text(element)));
+        columns.add(DataColumn(
+            label: Container(
+          padding: EdgeInsets.all(8),
+          decoration: BoxDecoration(
+              color: clr(2), borderRadius: BorderRadius.circular(8)),
+          child: Text(
+            element,
+            style: TextStyle(color: clr(5)),
+          ),
+        )));
       },
     );
     List<DataCell> createRow(Map item) {
       List<DataCell> row = [];
       arabicToEnglishDataNames.values.forEach((element) {
-        row.add(DataCell(Text(item[element].toString())));
+        if (element != "employeeid") {
+          row.add(DataCell(Text(item[element].toString())));
+        } else {
+          row.add(DataCell(
+              Container(
+                  padding: EdgeInsets.all(8),
+                  decoration: BoxDecoration(
+                      color: clr(2), borderRadius: BorderRadius.circular(8)),
+                  child: Text(item[element].toString(),
+                      style: TextStyle(color: clr(5)))), onTap: () {
+            Navigator.pushNamed(context, '/employee_details',
+                arguments: item[element]);
+          }));
+        }
       });
       return row;
     }
@@ -111,7 +148,7 @@ class _DatabaseHomeState extends State<DatabaseHome> {
           builder: (context, state) {
             if (state is DatabaseEmployeesLoaded) {
               return Container(
-                margin: EdgeInsets.all(16),
+                margin: EdgeInsets.all(4),
                 child: ListView(
                   children: [
                     Container(
@@ -180,7 +217,15 @@ class _DatabaseHomeState extends State<DatabaseHome> {
                           customButton(
                               label: 'بيان حالة وظيفية',
                               onPressed: () {
-                                buildEmployeeStatusFile(state.data);
+                                buildEmployeeStatusFile(
+                                    'بيان حالة وظيفية', state.data);
+                              }),
+                          SizedBox(width: 16),
+                          // employee status generation
+                          customButton(
+                              label: 'افادة',
+                              onPressed: () {
+                                buildEmployeeStatusFile('افادة', state.data);
                               }),
                           SizedBox(width: 16),
                           // statistics generation

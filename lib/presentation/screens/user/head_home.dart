@@ -6,14 +6,14 @@ import 'package:hr_management_app/presentation/components/customButton.dart';
 import 'package:hr_management_app/presentation/components/theme.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class UserHome extends StatefulWidget {
-  UserHome({super.key});
+class HeadHome extends StatefulWidget {
+  const HeadHome({super.key});
 
   @override
-  State<UserHome> createState() => _UserHomeState();
+  State<HeadHome> createState() => _HeadHomeState();
 }
 
-class _UserHomeState extends State<UserHome> {
+class _HeadHomeState extends State<HeadHome> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -65,6 +65,14 @@ class _UserHomeState extends State<UserHome> {
                                   Navigator.pushNamed(
                                       context, '/prev_requests');
                                 })),
+                        SizedBox(height: 32),
+                        Expanded(
+                          child: customButton(
+                              label: 'طلبات الموظفين',
+                              onPressed: () {
+                                Navigator.pushNamed(context, '/head_requests');
+                              }),
+                        ),
                         SizedBox(height: 32),
                       ],
                     ),

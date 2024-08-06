@@ -112,21 +112,3 @@ class UserArchiveCubit extends Cubit<UserArchiveState> {
     }
   }
 }
-// import 'package:meta/meta.dart';
-
-// part 'user_archive_state.dart';
-
-// class UserArchiveCubit extends Cubit<UserArchiveState> {
-//   ArchiveWebServices archiveWebServices;
-//   String userName = '';
-//   UserArchiveCubit({required this.archiveWebServices})
-//       : super(UserArchiveInitial());
-//   String getDoc() {
-//     archiveWebServices.getDoc().then((userName) {
-//       print("cubit: $userName");
-//       this.userName = userName;
-//       emit(UserArchiveLoaded(userName: userName));
-//     });
-//     return userName;
-//   }
-// }

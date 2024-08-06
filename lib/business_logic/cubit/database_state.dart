@@ -22,7 +22,7 @@ class DatabaseGettingEmployeesError extends DatabaseState {
 class DatabaseEmployeeLoading extends DatabaseState {}
 
 class DatabaseEmployeeLoaded extends DatabaseState {
-  final List data;
+  final Map data;
   DatabaseEmployeeLoaded({required this.data});
 }
 
@@ -37,8 +37,7 @@ class DatabaseAddEmployeeInitial extends DatabaseState {}
 class DatabaseAddingEmployee extends DatabaseState {}
 
 class DatabaseAddedEmployee extends DatabaseState {
-  final String data;
-  DatabaseAddedEmployee({required this.data});
+  DatabaseAddedEmployee();
 }
 
 class DatabaseAddingEmployeeError extends DatabaseState {

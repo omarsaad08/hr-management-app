@@ -31,6 +31,7 @@ class Transactions extends StatelessWidget {
                 HoverButton(context, name: 'العلاوات', routeName: 'Bonuses'),
                 HoverButton(context, name: 'الأجازات', routeName: 'Vacations'),
                 HoverButton(context, name: 'الترقيات', routeName: 'Promotions'),
+                HoverButton(context, name: 'الطلبات', routeName: 'requests'),
               ],
             ),
           )),
